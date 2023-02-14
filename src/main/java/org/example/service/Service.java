@@ -20,7 +20,7 @@ public class Service implements Serv {
     //region METHODS: CHECK
 
     @Override
-    public boolean checkStock(ProductforSale proSale) {
+    public boolean checkStock(ProductforSale proSale, String nameIn) {
         //region DEFINITION VARIABLES
         boolean resul = false, contin = false;
         int i = 0;
@@ -39,7 +39,7 @@ public class Service implements Serv {
 
                 // 2) CHECK PRODUCT STOCK
                 while (i < decoList.size() && !contin) {
-                    if (decoList.get(i).getId() == proSale.getProduct().getId()) {
+                    if (decoList.get(i).getName().equals(nameIn)) {
                         contin = true;
                         resul = proSale.getQuantity() <= decoList.get(i).getQuantity();
                     }
@@ -50,7 +50,7 @@ public class Service implements Serv {
 
                 // 2) CHECK PRODUCT STOCK
                 while (i < flowerList.size() && !contin) {
-                    if (flowerList.get(i).getId() == proSale.getProduct().getId()) {
+                    if (flowerList.get(i).getName().equals(nameIn)) {
                         contin = true;
                         resul = proSale.getQuantity() <= flowerList.get(i).getQuantity();
                     }
@@ -61,7 +61,7 @@ public class Service implements Serv {
 
                 // 2) CHECK PRODUCT STOCK
                 while (i < treeList.size() && !contin) {
-                    if (treeList.get(i).getId() == proSale.getProduct().getId()) {
+                    if (treeList.get(i).getName().equals(nameIn)) {
                         contin = true;
                         resul = proSale.getQuantity() <= treeList.get(i).getQuantity();
                     }
@@ -80,8 +80,8 @@ public class Service implements Serv {
         return resul;
     }
 
-
-    public boolean checkExistOnTicket(List<ProductforSale> proSafeListIn, String nameIn){
+    @Override
+    public boolean checkExistOnTicket(List<ProductforSale> proSafeListIn, String nameIn) {
         //region DEFINITION VARIABLES
         boolean resul = false, exit = false;
         int index = 0;
@@ -90,19 +90,15 @@ public class Service implements Serv {
 
 
         //region ACTIONS
-        try{
-            do{
-                if(proSafeListIn.get(index).getProduct().getName().equals(nameIn)){
-                    exit =true;
+        if (proSafeListIn.size() > 0) {
+            do {
+                if (proSafeListIn.get(index).getProduct().getName().equals(nameIn)) {
+                    exit = true;
                     resul = true;
                 }
 
                 index++;
-            }while (proSafeListIn.size() < index || exit != true);
-
-
-        }catch (Exception ex){
-
+            } while (proSafeListIn.size() < index && exit != true);
         }
         //endregion ACTIONS
 
@@ -128,7 +124,7 @@ public class Service implements Serv {
         //region ACTIONS
         try {
             // INIT VARIABLES
-            if(repoCls == null) {
+            if (repoCls == null) {
                 repoCls = new Repository();
             }
 
@@ -253,164 +249,7 @@ public class Service implements Serv {
 
     }
 
-
-    @Override
-    public List<Decoration> getDecorationList() throws GetMethodException {
-        //region DEFINITION VARIABLES
-        List<Decoration> decoList;
-
-        //endregion DEFINITION VARIABLES
-
-
-        //region ACTIONS
-        try {
-            // GET DECORATION PRODUCTS
-            decoList = new ArrayList<>(getDecoProducts());
-
-        } catch (Exception ex) {
-            throw new GetMethodException(2);
-        }
-        //endregion ACTIONS
-
-
-        // OUT
-        return decoList;
-    }
-
-
-    @Override
-    public List<Flower> getFlowerList() throws GetMethodException {
-        //region DEFINITION VARIABLES
-        List<Flower> flowerList;
-
-        //endregion DEFINITION VARIABLES
-
-
-        //region ACTIONS
-        try {
-            // GET FLOWERS PRODUCTS
-            flowerList = new ArrayList<>(getFlowerProducts());
-
-        } catch (Exception ex) {
-            throw new GetMethodException(3);
-        }
-
-        //endregion ACTIONS
-
-
-        // OUT
-        return flowerList;
-
-    }
-
-    @Override
-    public int[] getStock() throws GetMethodException {
-        //region DEFINITION VARIABLES
-        int[] results = new int[3];
-        List<Product> productList;
-
-        //endregion DEFINITION VARIABLES
-
-
-        //region ACTIONS
-        try {
-            // INIT
-            repoCls = new Repository();
-
-            // 1) GET STOCK
-            productList = new ArrayList<>(repoCls.getAllProducts());
-
-            // 3) SUM ALL STOCK
-            for (Product p : productList) {
-                if (p.getClass() == Decoration.class) {
-                    results[0] += p.getQuantity();
-                } else if (p.getClass() == Flower.class) {
-                    results[1] += p.getQuantity();
-                } else if (p.getClass() == Tree.class) {
-                    results[2] += p.getQuantity();
-                }
-            }
-
-        } catch (Exception ex) {
-            throw new GetMethodException(5);
-        }
-
-        //endregion ACTIONS
-
-
-        // OUT
-        return results;
-    }
-
-    @Override
-    public List<Tree> getTreeList() throws GetMethodException {
-        //region DEFINITION VARIABLES
-        List<Tree> treeList;
-
-        //endregion DEFINITION VARIABLES
-
-
-        //region ACTIONS
-        try {
-            // GET TREE PRODUCTS
-            treeList = new ArrayList<>(getTreeProducts());
-
-        } catch (Exception ex) {
-            throw new GetMethodException(4);
-        }
-
-        //endregion ACTIONS
-
-
-        // OUT
-        return treeList;
-
-    }
-
     //endregion METHODS: GET
-
-
-    //region METHODS: UPDATE
-
-    @Override
-    public boolean updateProduct(Product product) {
-        //region DEFINITION VARIABLES
-        boolean result;
-
-        //endregion DEFINITION VARIABLES
-
-
-        //region ACTIONS
-        try {
-            // INIT VARIABLES
-            repoCls = new Repository();
-
-            // CALL REPOSITORY METHOD
-            if (product.getClass() == Decoration.class) {
-                repoCls.updateDeco((Decoration) product);
-                result = true;
-            } else if (product.getClass() == Flower.class) {
-                repoCls.updateFlower((Flower) product);
-                result = true;
-            } else if (product.getClass() == Tree.class) {
-                repoCls.updateTree((Tree) product);
-                result = true;
-            } else {
-                result = false;
-            }
-
-        } catch (Exception ex) {
-            result = false;
-        }
-
-        //endregion ACTIONS
-
-
-        // OUT
-        return result;
-    }
-
-    //endregion METHODS: UPDATE
 
 
     //region METHODS: OTHERS (INIT, SUM,...)

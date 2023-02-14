@@ -363,7 +363,7 @@ public class Repository implements Repo{
         String productString = null;
 
         while ((line = reader.readLine()) != null && !exit) {
-            if (line.contains(Integer.toString(tree.getId())+";")){
+            if(line.startsWith(tree.getId() + ";")){
                productString = line;
                exit = true;
              }
@@ -377,7 +377,7 @@ public class Repository implements Repo{
         String productString = null;
 
         while ((line = reader.readLine())  != null && !exit) {
-            if (line.contains(Integer.toString(flower.getId())+";")){
+            if (line.startsWith(flower.getId() + ";")){
                 productString = line;
                 exit = true;
             }
@@ -391,7 +391,7 @@ public class Repository implements Repo{
         String productString = null;
 
         while ((line = reader.readLine())  != null && !exit) {
-            if (line.contains(Integer.toString(decoration.getId())+";")){
+            if (line.startsWith(decoration.getId()+";")){
                 productString = line;
                 exit = true;
             }

@@ -16,7 +16,7 @@ public interface Serv {
      * @param proSale La classe 'ProductforSale' per realitzar la comprovació.
      * @return Tipus boolena; False = no hi ha suficient stock; True: sí hi ha stock suficient.
      */
-    boolean checkStock(ProductforSale proSale);
+    boolean checkStock(ProductforSale proSale, String nameIn);
 
     /**
      * Comprova si en la llsita de ProductfoSafe ja existeixun id
@@ -65,55 +65,7 @@ public interface Serv {
      */
     List<Product> getAllProducts() throws GetMethodException;
 
-    /**
-     * Mètode per aconseguir la llista de totes les decoracions.
-     *
-     * @return Tipus List<Decoration>. La llista de totes les decoracions.
-     * @throws GetMethodException En el cas que hi hagi algun error, saltarà aquesta execpció.
-     */
-    List<Decoration> getDecorationList() throws GetMethodException;
-
-    /**
-     * Mètode per aconseguir la llista de totes les flors.
-     *
-     * @return Tipus List<Flower>. La llista de totes les flors. Si es retorna un null, vol dir que hi hagut.
-     * @throws GetMethodException En el cas que hi hagi algun error, saltarà aquesta execpció.
-     */
-    List<Flower> getFlowerList() throws GetMethodException;
-
-    /**
-     * Mètode que retorna una matriu de 3 integers amb el stock de cada element, on...
-     * [0] és el stock de decorations
-     * [1] és el stock de flowers
-     * [2] és el stock d2 trees
-     *
-     * @return Tipus int[]. La matriu de 3 integers.
-     * @throws GetMethodException En el cas que hi hagi algun error, saltarà aquesta execpció.
-     */
-    int[] getStock() throws GetMethodException;
-
-    /**
-     * Mètode per aconseguir la llista de tots els arbres.
-     *
-     * @return Tipus List<Tree>. La llista de tots els arbres. Si es retorna un null, vol dir que hi hagut.
-     * @throws GetMethodException En el cas que hi hagi algun error, saltarà aquesta execpció.
-     */
-    List<Tree> getTreeList() throws GetMethodException;
-
     //endregion METHODS: GET
-
-
-    //region METHODS: UPDATE
-
-    /**
-     * Mètode per actualitzar la info d'un producte.
-     *
-     * @param product Necessita la classe del producte que s'ha de modificar.
-     * @return Tipus boolena. false = hi hagut algun error; true = tot ha sortit bé.
-     */
-    boolean updateProduct(Product product);
-
-    //endregion METHODS: UPDATE
 
 
     //region METHODS: OTHERS (INIT, SUM,...)

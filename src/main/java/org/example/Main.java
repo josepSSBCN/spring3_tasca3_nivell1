@@ -278,14 +278,14 @@ public class Main {
 				int productQuantity = captureNumber("Quantity: " + "\n");
 				Product productSelected = productsToShow.get(selection);
 				ProductforSale productForSale = new ProductforSale(productSelected, productQuantity);
-				boolean enoughStock = service.checkStock(productForSale);
+				boolean enoughStock = service.checkStock(productForSale, productForSale.getProduct().getName());
 				if(selection <= products.size() && selection > 0){
 					if(enoughStock == false){
 						do{
 							System.out.println("Not enough stock. Please try again.");
 							productQuantity = captureNumber("Quantity: " + "\n");
 							productForSale.setQuantity(productQuantity);
-							enoughStock = service.checkStock(productForSale);
+							enoughStock = service.checkStock(productForSale, productForSale.getProduct().getName());
 						}while (enoughStock == false);
 					}
 				}
